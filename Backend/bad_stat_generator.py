@@ -5,7 +5,9 @@ import requests
 import random
 from dotenv import load_dotenv
 
+
 load_dotenv()
+app = Flask(__name__)
 base_url = os.getenv("supabase_base_url")
 api_key = os.getenv("supabase_api_key")
 
@@ -121,6 +123,7 @@ def get_random_date_comparison(better_statlines: list):
     better_statlines = better_statlines[:random_number_of_players]
     return min([statline['GAME_DATE_EST'] for statline in better_statlines])
 
+@app.route('/api/v1/stat/pra', methods=['GET'])
 def generate_points_rebounds_assists_stat() -> str:
     """
     Generates a string representation of a random Points, Rebounds and Assists (PRA) stat.
@@ -139,6 +142,7 @@ def generate_points_rebounds_assists_stat() -> str:
 
     return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists."
 
+@app.route('/api/v1/stat/all', methods=['GET'])
 def generate_full_statline_stat() -> str:
     """
     Generates a string representation of a random full stat line.
@@ -157,6 +161,7 @@ def generate_full_statline_stat() -> str:
 
     return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals."
 
+@app.route('/api/v1/stat/ef', methods=['GET'])
 def generate_game_effiency_stat():
     """
     Generates a string representation of a random game efficiency stat.
@@ -175,4 +180,5 @@ def generate_game_effiency_stat():
 
     return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals while shooting over {round(statline['FG_PCT']*100, 2)} percent from the field."
 
-
+if __name__ == '__main__':
+    app.run(debug=True)
