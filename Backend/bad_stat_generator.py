@@ -89,7 +89,7 @@ def get_random_season_statline() -> dict:
     }
 
     response = requests.get(
-        f"{base_url}/rest/v1/Player Stats?PTS=gte.20&AST=gte.4&TRB=gte.4&SeasonInt=gte.10&G=gte.41",
+        f"{base_url}/rest/v1/Player Stats?PTS=gte.20&AST=gte.1&TRB=gte.2&SeasonInt=gte.10&G=gte.41&PTS=lt.30&AST=lt.6&TRB=lt.8",
         headers=headers,
     )
 
@@ -270,20 +270,16 @@ def generate_game_effiency_stat():
 def generate_season_stat():
     statline = get_random_season_statline()
     better_statlines = get_better_season_statlines(statline)
-    reference_better_statlines = better_statlines
     if not better_statlines:
         return f"In the {statline['Season']} season, {statline['PLAYER']} was the only player since 1997-1998 to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
-    flag = True
-    # Hangs forever if the only other occurence of this statline was from the same season
-    while flag:
-        better_statlines = reference_better_statlines
-        random_number_of_players = random.randint(1, len(better_statlines))
+    
+    random_number_of_players = random.randint(1, len(better_statlines))
 
-        better_statlines = better_statlines[:random_number_of_players]
-        oldest_season = min([statline["SeasonInt"] for statline in better_statlines])
+    better_statlines = better_statlines[:random_number_of_players]
+    oldest_season = min([statline["SeasonInt"] for statline in better_statlines])
 
-        if not oldest_season == statline["SeasonInt"]:
-            flag = False
+    if oldest_season == statline["SeasonInt"]:
+        return f"In the {statline['Season']} season, {statline['Player']} was one of {len(better_statlines)} players to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
 
     suffix = add_suffix(len(better_statlines))
 
