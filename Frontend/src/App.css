@@ -1,0 +1,66 @@
+body {
+  background-color: #333333 !important; 
+  color: #080808;
+}
+
+.list-group-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  border: 2px solid #fff;
+  background-color: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Style for the individual list group items */
+.list-group-item {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #000000;
+  cursor: pointer;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item:hover {
+  background-color: #555;
+}
+
+.social-links {
+  position: absolute;
+  bottom: 90%;
+  left: 95%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-links a {
+  display: block;
+}
+
+.social-links img {
+  width: 40px; 
+}
+
+.analyst-image {
+  max-height: 400px; /* Change this value to your desired maximum height */
+  width: auto; /* This allows the width to vary proportionally */
+}
+
+.analyst-container {
+  position: absolute; /* Allows precise positioning */
+  top: 35%;           /* Positions the container a quarter from the top */
+  left: 50%;          /* Centers the container horizontally */
+  transform: translate(-50%, -50%); /* Corrects for the exact center */
+  text-align: center; /* Centers the image within the container */
+}
+
+

@@ -222,7 +222,7 @@ def generate_points_rebounds_assists_stat() -> str:
     return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists."
 
 
-@app.route("/api/v1/stat/all", methods=["GET"])
+@app.route("/api/v1/stat/full", methods=["GET"])
 def generate_full_statline_stat() -> str:
     """
     Generates a string representation of a random full stat line.
