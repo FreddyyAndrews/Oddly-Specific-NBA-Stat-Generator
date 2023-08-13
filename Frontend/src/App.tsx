@@ -24,11 +24,12 @@ function App() {
         break;
       case "ef":
         endpoint = "http://127.0.0.1:5000/api/v1/stat/ef";
+        break;
       case "season":
         endpoint = "http://127.0.0.1:5000/api/v1/stat/season";
         break;
       default:
-        endpoint = "/api/defaultEndpoint";
+        endpoint = "http://127.0.0.1:5000/api/v1/stat/pra";
         break;
     }
 
@@ -36,6 +37,7 @@ function App() {
     try {
       const response = await fetch(endpoint);
       const data = await response.text();
+      console.log('Fetched data:', data);
       setAnalystData(data);
       setSelectedStat(stat);
     } catch (error) {

@@ -6,19 +6,19 @@ function StatList({ onSelect }: StatListProps) {
   const stats = [
     {
       id: "pra",
-      text: "On ___, ___ was the ___th player since ___ to score ___ points, grab ___ rebounds and deliver ___ assists.",
+      text: "Generate game stat (PTS, REB, AST)",
     },
     {
       id: "full",
-      text: "On ___, ___ was the ___th player since ___ to score ___ points, grab ___ rebounds, deliver ___ assists, block ___ shots and get ___ steals.",
+      text: "Generate game stat (PTS, REB, AST, BLK, STL)",
     },
     {
       id: "ef",
-      text: "On ___, ___ was the __th player since ___ to score ___ points, grab ___ rebounds, deliver ___ assists, block ___ shots and get ___ steals while shooting over ___ percent from the field.",
+      text: "Generate game stat (PTS, REB, AST, BLK, STL, FG-PCT)",
     },
     {
       id: "season",
-      text: "In the ___ season, ___ was the ___th player since ___ to average ___ points, ___ rebounds, and ___ assists.",
+      text: "Generate season stat",
     },
   ];
 

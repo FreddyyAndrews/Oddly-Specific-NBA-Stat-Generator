@@ -63,4 +63,11 @@ body {
   text-align: center; /* Centers the image within the container */
 }
 
+.analyst-text {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  color: white;
+}
+
 

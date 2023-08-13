@@ -1,13 +1,15 @@
+from datetime import datetime
 import math
 import os
 from flask import Flask, jsonify
 import requests
 import random
 from dotenv import load_dotenv
-
+from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 base_url = os.getenv("supabase_base_url")
 api_key = os.getenv("supabase_api_key")
 
@@ -180,6 +182,12 @@ def add_suffix(n) -> str:
     return suffixes.get(n % 10, "th")
 
 
+def convert_date(date_str):
+    date_object = datetime.strptime(date_str, "%Y-%m-%d")
+    suffix = add_suffix(date_object.day)
+    return date_object.strftime(f"%B {date_object.day}{suffix}, %Y")
+
+
 def get_random_date_comparison(better_statlines: list) -> list:
     """
     Gets a random comparator value from a list of better stat lines.
@@ -190,9 +198,10 @@ def get_random_date_comparison(better_statlines: list) -> list:
     Returns:
         str: The comparator value and the shortened stat comparison list.
     """
-    random_number_of_players = random.randint(
-        math.floor(len(better_statlines) / 2), len(better_statlines)
-    )
+    if not better_statlines:
+        return [0, []]
+    random_number_of_players = random.randint(1, len(better_statlines))
+
     better_statlines = better_statlines[:random_number_of_players]
     return [
         min([statline["GAME_DATE_EST"] for statline in better_statlines]),
@@ -212,14 +221,14 @@ def generate_points_rebounds_assists_stat() -> str:
     better_statlines = get_better_statlines(statline, "PRA")
 
     if not better_statlines:
-        return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists"
+        return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists"
 
     comparator = get_random_date_comparison(better_statlines)
     oldest_statline_date = comparator[0]
     better_statlines = comparator[1]
     suffix = add_suffix(len(better_statlines))
 
-    return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists."
+    return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {convert_date(oldest_statline_date)} to score {statline['PTS']} points, grab {statline['REB']} rebounds and deliver {statline['AST']} assists."
 
 
 @app.route("/api/v1/stat/full", methods=["GET"])
@@ -234,14 +243,14 @@ def generate_full_statline_stat() -> str:
     better_statlines = get_better_statlines(statline, "ALL")
 
     if not better_statlines:
-        return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals."
+        return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals."
 
     comparator = get_random_date_comparison(better_statlines)
     oldest_statline_date = comparator[0]
     better_statlines = comparator[1]
     suffix = add_suffix(len(better_statlines))
 
-    return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals."
+    return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {convert_date(oldest_statline_date)} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals."
 
 
 @app.route("/api/v1/stat/ef", methods=["GET"])
@@ -256,34 +265,35 @@ def generate_game_effiency_stat():
     better_statlines = get_better_statlines(statline, "EF")
 
     if not better_statlines:
-        return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals while shooting over {round(statline['FG_PCT']*100, 2)} percent from the field."
+        return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the only player since 2004 to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals while shooting over {round(statline['FG_PCT']*100, 2)} percent from the field."
 
     comparator = get_random_date_comparison(better_statlines)
     oldest_statline_date = comparator[0]
     better_statlines = comparator[1]
     suffix = add_suffix(len(better_statlines))
 
-    return f"On {statline['GAME_DATE_EST']}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {oldest_statline_date} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals while shooting over {round(statline['FG_PCT']*100, 2)} percent from the field."
+    return f"On {convert_date(statline['GAME_DATE_EST'])}, {statline['PLAYER_NAME']} was the {len(better_statlines)}{suffix} player since {convert_date(oldest_statline_date)} to score {statline['PTS']} points, grab {statline['REB']} rebounds, deliver {statline['AST']} assists, block {statline['BLK']} shots and get {statline['STL']} steals while shooting over {round(statline['FG_PCT']*100, 2)} percent from the field."
 
 
 @app.route("/api/v1/stat/season", methods=["GET"])
 def generate_season_stat():
     statline = get_random_season_statline()
     better_statlines = get_better_season_statlines(statline)
+    full_length = len(better_statlines)
     if not better_statlines:
         return f"In the {statline['Season']} season, {statline['PLAYER']} was the only player since 1997-1998 to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
-    
+
     random_number_of_players = random.randint(1, len(better_statlines))
 
     better_statlines = better_statlines[:random_number_of_players]
     oldest_season = min([statline["SeasonInt"] for statline in better_statlines])
 
     if oldest_season == statline["SeasonInt"]:
-        return f"In the {statline['Season']} season, {statline['Player']} was one of {len(better_statlines)} players to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
+        return f"In the {statline['Season']} season, {statline['Player'].strip('*')} was one of {full_length} players to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
 
     suffix = add_suffix(len(better_statlines))
 
-    return f"In the {statline['Season']} season, {statline['Player']} was the {len(better_statlines)}{suffix} player since {int_to_season[oldest_season]} to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
+    return f"In the {statline['Season']} season, {statline['Player'].strip('*')} was the {len(better_statlines)}{suffix} player since {int_to_season[oldest_season]} to average {statline['PTS']} points, {statline['TRB']} rebounds, and {statline['AST']} assists."
 
 
 if __name__ == "__main__":

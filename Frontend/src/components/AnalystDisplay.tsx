@@ -11,24 +11,24 @@ type AnalystDisplayProps = {
   analystData: any;
 };
 
-function AnalystDisplay({ stat }: { stat: string }) {
-  const images = [
-    chrissoRusso,
-    Jefferson,
-    kellerman,
-    mikeGreenberg,
-    perkins,
-    rachelNichols,
-    stephenA,
+function AnalystDisplay({ stat, analystData }: AnalystDisplayProps) {
+  const analysts = [
+    { image: chrissoRusso, name: "Mad Dog" },
+    { image: Jefferson, name: "Richard Jefferson" },
+    { image: kellerman, name: "Max Kellerman" },
+    { image: mikeGreenberg, name: "Mike Greenberg" },
+    { image: perkins, name: "Kendrick Perkins" },
+    { image: rachelNichols, name: "Rachel Nichols" },
+    { image: stephenA, name: "Stephen A Smith" },
   ];
 
-  const randomImage = images[Math.floor(Math.random() * images.length)];
+  const randomAnalyst = analysts[Math.floor(Math.random() * analysts.length)];
 
   return (
     <div className="analyst-container">
-      <img src={randomImage} alt="Analyst" className="analyst-image" />
+      <img src={randomAnalyst.image} alt="Analyst" className="analyst-image" />
       <div className="analyst-text">
-        {analystData ? analystData : "Loading..."}
+        {randomAnalyst.name} says: {analystData ? analystData : "Loading..."}
       </div>
     </div>
   );
