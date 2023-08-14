@@ -16,7 +16,7 @@ This project is inspired by many overly specific basketball stats published by s
 
 ---
 
-# Developpement Process
+# Developement Process
 
 - Flask backend deployed on Heroku.
 
