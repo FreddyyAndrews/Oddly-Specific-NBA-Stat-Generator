@@ -9,7 +9,12 @@ from flask_cors import CORS
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(
+    app,
+    resources={
+        r"/*": {"origins": "https://oddly-specific-nba-stat-generator.netlify.app/"}
+    },
+)
 base_url = os.getenv("supabase_base_url")
 api_key = os.getenv("supabase_api_key")
 
