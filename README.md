@@ -8,7 +8,7 @@ This project is inspired by many overly specific basketball stats published by s
 
 ---
 
-# [Try it](URL)
+# [Click here to try it!](https://oddly-specific-nba-stat-generator.netlify.app/)
 
 ---
 
@@ -27,7 +27,3 @@ This project is inspired by many overly specific basketball stats published by s
 - React typescript frontend hosted on Netlify.
 
 - NBA stat database hosted on Supabase.
-
----
-
-# Demo
