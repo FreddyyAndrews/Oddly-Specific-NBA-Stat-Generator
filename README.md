@@ -8,6 +8,10 @@ This project is inspired by many overly specific basketball stats published by s
 
 ---
 
+# [Try it](URL)
+
+---
+
 # What the Application Does:
 
 - Randomly selects an impressive stat from a database of NBA stats.
