@@ -17,19 +17,24 @@ function App() {
     let endpoint;
     switch (stat) {
       case "pra":
-        endpoint = "http://127.0.0.1:5000/api/v1/stat/pra";
+        endpoint =
+          "https://oddly-specific-nba-stat-602f1804cb37.herokuapp.com/api/v1/stat/pra";
         break;
       case "full":
-        endpoint = "http://127.0.0.1:5000/api/v1/stat/full";
+        endpoint =
+          "https://oddly-specific-nba-stat-602f1804cb37.herokuapp.com/api/v1/stat/full";
         break;
       case "ef":
-        endpoint = "http://127.0.0.1:5000/api/v1/stat/ef";
+        endpoint =
+          "https://oddly-specific-nba-stat-602f1804cb37.herokuapp.com/api/v1/stat/ef";
         break;
       case "season":
-        endpoint = "http://127.0.0.1:5000/api/v1/stat/season";
+        endpoint =
+          "https://oddly-specific-nba-stat-602f1804cb37.herokuapp.com/api/v1/stat/season";
         break;
       default:
-        endpoint = "http://127.0.0.1:5000/api/v1/stat/pra";
+        endpoint =
+          "https://oddly-specific-nba-stat-602f1804cb37.herokuapp.com/api/v1/stat/pra";
         break;
     }
 
@@ -37,7 +42,7 @@ function App() {
     try {
       const response = await fetch(endpoint);
       const data = await response.text();
-      console.log('Fetched data:', data);
+      console.log("Fetched data:", data);
       setAnalystData(data);
       setSelectedStat(stat);
     } catch (error) {
