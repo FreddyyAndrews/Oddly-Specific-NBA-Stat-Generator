@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(
     app,
     resources={
-        r"/*": {"origins": "https://oddly-specific-nba-stat-generator.netlify.app/"}
+        r"/*": {"origins": "https://oddly-specific-nba-stat-generator.netlify.app"}
     },
 )
 base_url = os.getenv("supabase_base_url")
